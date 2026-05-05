@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-const title = "Join ARCADIA | 아르카디아 Discord Server!";
+const title = "Join ARCADIA";
 const description = "Ever-evolving to shape the ideal";
 const url = "https://acda.kr/discord";
 const image = "https://acda.kr/images/arcadia_banner.png";
@@ -23,6 +23,11 @@ export default function DiscordPage() {
             <meta property="og:image:alt" content="ARCADIA Discord Server" />
             <meta property="og:url" content={url} />
             <meta property="og:type" content="website" />
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content={title} />
+            <meta name="twitter:description" content={description} />
+            <meta name="twitter:image" content={image} />
+            <meta name="twitter:image:alt" content="ARCADIA Discord Server" />
             <div className="flex min-h-[calc(100dvh-5rem)] items-center justify-center px-6 text-center">
                 <div>
                     <h1 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">{title}</h1>
