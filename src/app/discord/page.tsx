@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const title = "Join ARCADIA";
 const description = "Ever-evolving to shape the ideal";
 const url = "https://acda.kr/discord";
-const image = "https://acda.kr/images/arcadia_banner.png";
+const image = "https://acda.kr/images/arcadia_logo.png";
 const inviteUrl = "https://discord.gg/NanAfkRdww";
 
 export const metadata: Metadata = {
