@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import DiscordRedirect from "./DiscordRedirect";
 
 const title = "Join ARCADIA";
 const description = "Ever-evolving to shape the ideal";
@@ -14,7 +15,6 @@ export const metadata: Metadata = {
 export default function DiscordPage() {
     return (
         <>
-            <meta httpEquiv="refresh" content={`1;url=${inviteUrl}`} />
             <meta property="og:title" content={title} />
             <meta property="og:description" content={description} />
             <meta property="og:image" content={image} />
@@ -28,6 +28,7 @@ export default function DiscordPage() {
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content={image} />
             <meta name="twitter:image:alt" content="ARCADIA Discord Server" />
+            <DiscordRedirect href={inviteUrl} />
             <div className="flex min-h-[calc(100dvh-5rem)] items-center justify-center px-6 text-center">
                 <div>
                     <h1 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">{title}</h1>
