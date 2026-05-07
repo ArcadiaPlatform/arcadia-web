@@ -1,1 +1,43 @@
-{"docs":{"home":{"label":"ARCADIA Docs","href":"https://docs.acda.kr"},"pages":[{"label":"서비스 이용약관","href":"https://docs.acda.kr/terms"},{"label":"라이선스 및 저작권","href":"https://docs.arcadiateam.kr/license"},{"label":"커뮤니티 이용 가이드라인","href":"https://docs.arcadiateam.kr/community-guidelines"},{"label":"서비스 운영정책","href":"https://docs.arcadiateam.kr/operating-policy"}]},"sns":[{"label":"디스코드","href":"https://discord.gg/NanAFkRdww","icon":"/icons/discord.svg"},{"label":"유튜브","href":"https://www.youtube.com/@Arcadia-R","icon":"/icons/youtube.svg"},{"label":"깃허브","href":"https://github.com/TeamArcadia/","icon":"/icons/github.svg"}]}
+{
+  "docs": {
+    "home": {
+      "label": "ARCADIA Docs",
+      "href": "https://docs.acda.kr"
+    },
+    "pages": [
+      {
+        "label": "서비스 이용약관",
+        "href": "https://docs.acda.kr/terms"
+      },
+      {
+        "label": "라이선스 및 저작권",
+        "href": "https://docs.acda.kr/license"
+      },
+      {
+        "label": "커뮤니티 이용 가이드라인",
+        "href": "https://docs.acda.kr/community-guidelines"
+      },
+      {
+        "label": "서비스 운영정책",
+        "href": "https://docs.acda.kr/operating-policy"
+      }
+    ]
+  },
+  "sns": [
+    {
+      "label": "디스코드",
+      "href": "https://acda.kr/discord",
+      "icon": "/icons/discord.svg"
+    },
+    {
+      "label": "유튜브",
+      "href": "https://acda.kr/youtude",
+      "icon": "/icons/youtube.svg"
+    },
+    {
+      "label": "깃허브",
+      "href": "https://acda.kr/github",
+      "icon": "/icons/github.svg"
+    }
+  ]
+}
