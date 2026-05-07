@@ -26,64 +26,47 @@ function getThumbnailUrl(links: readonly { href: string }[]): string | null {
 
 const AUTO_INTERVAL = 4000;
 const CARD_WIDTH = 260;
-const CARD_GAP = 14;
+const CARD_GAP = 16;
 const CARD_STEP = CARD_WIDTH + CARD_GAP;
 const WHEEL_THRESHOLD = 50;
 const WHEEL_COOLDOWN = 400;
 const FALLBACK_IMAGE = "/images/arcadia_banner.png";
-
-type ProjectItem = (typeof PROJECTS)[number];
+const EASE = "cubic-bezier(0.4,0,0.2,1)";
 
 export default function Projects() {
     const [index, setIndex] = useState(0);
-    const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+    const [paused, setPaused] = useState(false);
     const wheelAccum = useRef(0);
     const lastWheelTime = useRef(0);
+    const carouselRef = useRef<HTMLDivElement>(null);
 
     const goNext = useCallback(() => setIndex((i) => (i + 1) % PROJECTS.length), []);
     const goPrev = useCallback(() => setIndex((i) => (i - 1 + PROJECTS.length) % PROJECTS.length), []);
 
-    const carouselRef = useRef<HTMLDivElement>(null);
-
-    const onWheel = useCallback(
-        (e: WheelEvent) => {
+    useEffect(() => {
+        const el = carouselRef.current;
+        if (!el) return;
+        const onWheel = (e: WheelEvent) => {
             const now = Date.now();
-            if (now - lastWheelTime.current < WHEEL_COOLDOWN) {
-                e.preventDefault();
-                return;
-            }
+            if (now - lastWheelTime.current < WHEEL_COOLDOWN) { e.preventDefault(); return; }
             const delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
             wheelAccum.current += delta;
             if (Math.abs(wheelAccum.current) >= WHEEL_THRESHOLD) {
                 e.preventDefault();
                 lastWheelTime.current = now;
-                if (wheelAccum.current > 0) goNext();
-                else goPrev();
+                if (wheelAccum.current > 0) goNext(); else goPrev();
                 wheelAccum.current = 0;
             }
-        },
-        [goNext, goPrev]
-    );
-
-    useEffect(() => {
-        const el = carouselRef.current;
-        if (!el) return;
+        };
         el.addEventListener("wheel", onWheel, { passive: false });
         return () => el.removeEventListener("wheel", onWheel);
-    }, [onWheel]);
+    }, [goNext, goPrev]);
 
     useEffect(() => {
+        if (paused) return;
         const id = setInterval(goNext, AUTO_INTERVAL);
         return () => clearInterval(id);
-    }, [goNext]);
-
-    useEffect(() => {
-        const onKey = (e: KeyboardEvent) => {
-            if (e.key === "Escape") setSelectedProject(null);
-        };
-        window.addEventListener("keydown", onKey);
-        return () => window.removeEventListener("keydown", onKey);
-    }, []);
+    }, [goNext, paused]);
 
     return (
         <section id="projects" className={`relative py-16 md:py-20 ${SCROLL_SECTION}`}>
@@ -106,52 +89,55 @@ export default function Projects() {
                                 return (
                                     <div
                                         key={`${project.title}-${i}`}
-                                        className="h-[234px] shrink-0 cursor-pointer"
-                                        style={{ width: CARD_WIDTH }}
-                                        onClick={() => setSelectedProject(project)}
-                                        onKeyDown={(e) => e.key === "Enter" && setSelectedProject(project)}
-                                        role="button"
-                                        tabIndex={0}
-                                        aria-label={`${project.title} 자세히 보기`}
+                                        className="group shrink-0 overflow-hidden rounded-sm border border-white/[0.08] bg-white/[0.03] shadow-sm transition-all duration-500 hover:border-white/30 hover:shadow-lg hover:shadow-black/40"
+                                        style={{ width: CARD_WIDTH, transitionTimingFunction: EASE }}
+                                        onMouseEnter={() => setPaused(true)}
+                                        onMouseLeave={() => setPaused(false)}
                                     >
-                                        <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.03] shadow-sm transition-all duration-300 hover:border-white/[0.12] hover:bg-white/[0.05]">
-                                            <div className="relative aspect-video w-full shrink-0 bg-white/[0.04]">
-                                                <Image
-                                                    src={thumbnailUrl ?? FALLBACK_IMAGE}
-                                                    alt=""
-                                                    fill
-                                                    className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                                                    sizes="260px"
-                                                    unoptimized={!!thumbnailUrl}
-                                                />
-                                            </div>
-                                            <div className="flex min-h-0 flex-1 flex-col justify-between px-3.5 py-3">
-                                                <div>
+                                        {/* 썸네일 */}
+                                        <div className="relative aspect-video w-full overflow-hidden bg-white/[0.04]">
+                                            <Image
+                                                src={thumbnailUrl ?? FALLBACK_IMAGE}
+                                                alt=""
+                                                fill
+                                                className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
+                                                style={{ transitionTimingFunction: EASE }}
+                                                sizes="260px"
+                                                unoptimized={!!thumbnailUrl}
+                                            />
+                                        </div>
+                                        {/* 텍스트 (호버 시 grid collapse) */}
+                                        <div
+                                            className="grid transition-all duration-500 group-hover:[grid-template-rows:0fr]"
+                                            style={{ gridTemplateRows: "1fr", transitionTimingFunction: EASE }}
+                                        >
+                                            <div className="overflow-hidden">
+                                                <div className="flex flex-col gap-1 px-3.5 py-2">
                                                     <h3 className="text-[13px] font-semibold tracking-tight text-white line-clamp-1">
                                                         {project.title}
                                                     </h3>
-                                                    <p className="mt-1 text-[11px] leading-snug text-zinc-500 line-clamp-2">
+                                                    <p className="text-[11px] leading-snug text-zinc-500 line-clamp-2">
                                                         {project.desc}
                                                     </p>
+                                                    {project.links.length > 0 && (
+                                                        <div className="mt-0.5 flex flex-wrap gap-x-4 gap-y-0.5">
+                                                            {project.links.map((link) => (
+                                                                <a
+                                                                    key={link.href + link.label}
+                                                                    href={link.href}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="inline-flex items-center gap-1.5 text-[11px] font-medium text-zinc-500 transition-colors hover:text-zinc-300"
+                                                                >
+                                                                    {link.icon && (
+                                                                        <Image src={link.icon} alt="" width={12} height={12} className="h-3 w-3 opacity-75" />
+                                                                    )}
+                                                                    {link.label}
+                                                                </a>
+                                                            ))}
+                                                        </div>
+                                                    )}
                                                 </div>
-                                                {project.links.length > 0 && (
-                                                    <div className="mt-2.5 flex flex-wrap gap-x-4 gap-y-0.5" onClick={(e) => e.stopPropagation()}>
-                                                        {project.links.map((link) => (
-                                                            <a
-                                                                key={link.href + link.label}
-                                                                href={link.href}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                                className="inline-flex items-center gap-1.5 text-[11px] font-medium text-zinc-500 transition-colors hover:text-zinc-300"
-                                                            >
-                                                                {link.icon && (
-                                                                    <Image src={link.icon} alt="" width={12} height={12} className="h-3 w-3 opacity-75" />
-                                                                )}
-                                                                {link.label}
-                                                            </a>
-                                                        ))}
-                                                    </div>
-                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -196,71 +182,6 @@ export default function Projects() {
                     </div>
                 </div>
             </Container>
-
-            {selectedProject && (
-                <div
-                    className="fixed inset-0 z-50 flex items-center justify-center p-4"
-                    aria-modal
-                    aria-labelledby="project-modal-title"
-                >
-                    <div
-                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-                        onClick={() => setSelectedProject(null)}
-                        aria-hidden
-                    />
-                    <div
-                        className="relative w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-[#0e0a14] shadow-2xl"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <div className="relative aspect-video w-full bg-white/[0.04]">
-                            <Image
-                                src={getThumbnailUrl(selectedProject.links) ?? FALLBACK_IMAGE}
-                                alt=""
-                                fill
-                                className="object-cover object-center"
-                                sizes="(max-width: 28rem) 100vw, 28rem"
-                                unoptimized={!!getThumbnailUrl(selectedProject.links)}
-                            />
-                        </div>
-                        <div className="p-5">
-                            <h2 id="project-modal-title" className="text-lg font-semibold tracking-tight text-white">
-                                {selectedProject.title}
-                            </h2>
-                            <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-                                {selectedProject.desc}
-                            </p>
-                            {selectedProject.links.length > 0 && (
-                                <div className="mt-4 flex flex-wrap gap-3">
-                                    {selectedProject.links.map((link) => (
-                                        <a
-                                            key={link.href + link.label}
-                                            href={link.href}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-medium text-zinc-300 transition-colors hover:border-white/20 hover:bg-white/[0.08] hover:text-white"
-                                        >
-                                            {link.icon && (
-                                                <Image src={link.icon} alt="" width={18} height={18} className="h-4 w-4 opacity-90" />
-                                            )}
-                                            {link.label}
-                                        </a>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                        <button
-                            type="button"
-                            onClick={() => setSelectedProject(null)}
-                            className="absolute right-3 top-3 rounded-full p-1.5 text-white/60 transition-colors hover:bg-white/10 hover:text-white"
-                            aria-label="닫기"
-                        >
-                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            )}
         </section>
     );
 }

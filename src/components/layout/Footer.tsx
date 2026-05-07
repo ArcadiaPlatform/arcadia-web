@@ -85,12 +85,6 @@ export default function Footer() {
                             aria-expanded={businessInfoOpen}
                         >
                             사업자 정보 확인
-                            <span
-                                className={`text-[10px] transition-transform duration-200 ${businessInfoOpen ? "rotate-180" : ""}`}
-                                aria-hidden
-                            >
-                                ▾
-                            </span>
                         </button>
                     </div>
                     {businessInfoOpen && (

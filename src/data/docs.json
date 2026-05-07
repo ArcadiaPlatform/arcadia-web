@@ -1,0 +1,25 @@
+{
+    "home": {
+        "label": "ARCADIA Docs",
+        "href": "https://docs.acda.kr",
+        "description": "가이드북, 이용약관, 라이선스 정책 등 아르카디아의 모든 공식 문서를 확인하세요."
+    },
+    "pages": [
+        {
+            "label": "서비스 이용약관",
+            "href": "https://docs.acda.kr/terms"
+        },
+        {
+            "label": "라이선스 및 저작권",
+            "href": "https://docs.acda.kr/license"
+        },
+        {
+            "label": "커뮤니티 이용 가이드라인",
+            "href": "https://docs.acda.kr/community-guidelines"
+        },
+        {
+            "label": "서비스 운영정책",
+            "href": "https://docs.acda.kr/operating-policy"
+        }
+    ]
+}

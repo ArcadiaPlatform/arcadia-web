@@ -1,6 +1,12 @@
+import aboutData from "@/data/about.json";
+import contactData from "@/data/contact.json";
+import discordData from "@/data/discord.json";
+import docsData from "@/data/docs.json";
 import footerData from "@/data/footer.json";
+import heroData from "@/data/hero.json";
 import projectsData from "@/data/projects.json";
 import siteData from "@/data/site.json";
+import storeData from "@/data/store.json";
 import timelineData from "@/data/timeline.json";
 
 // ============ Navigation ============
@@ -24,28 +30,40 @@ export const SECTION_HEADERS = {
     contact: { label: "Contact", title: "문의" },
 } as const;
 
-// ============ Hero ============
+// ============ Site ============
 export const SITE_NAME = siteData.siteName;
-export const PAGE_TITLE = (siteData as { pageTitle?: string }).pageTitle ?? siteData.siteName;
-export const HERO_TAGLINE = siteData.heroTagline;
+export const PAGE_TITLE = siteData.pageTitle;
+export const COPYRIGHT = siteData.copyright;
+export const TEAM_NAME = siteData.teamName;
 
-export const DISCORD_INVITE = {
-    href: siteData.discord.href,
-    inviteCode: siteData.discord.inviteCode,
-    message: siteData.discord.message,
-    buttonLabel: siteData.discord.buttonLabel,
-} as const;
-
-export const STORE_LINK = {
-    href: siteData.store.href,
-    label: siteData.store.label,
-    labelShort: (siteData.store as { labelShort?: string }).labelShort ?? siteData.store.label,
-} as const;
+// ============ Hero ============
+export const HERO_TAGLINE = heroData.tagline;
 
 // ============ About ============
-export const ABOUT_HEADLINE = siteData.aboutHeadline ?? "";
-export const ABOUT_DESCRIPTION = siteData.aboutDescription;
+export const ABOUT_HEADLINE = aboutData.headline;
+export const ABOUT_DESCRIPTION = aboutData.description;
 
+// ============ Discord ============
+export const DISCORD_INVITE = {
+    href: discordData.href,
+    inviteCode: discordData.inviteCode,
+    message: discordData.message,
+    buttonLabel: discordData.buttonLabel,
+    description: discordData.description,
+} as const;
+
+// ============ Store ============
+export const STORE_LINK = {
+    href: storeData.href,
+    label: storeData.label,
+    labelShort: storeData.labelShort,
+    description: storeData.description,
+    badge: storeData.badge,
+} as const;
+
+// ============ Docs ============
+export const DOCS_HOME = docsData.home;
+export const DOCS_PAGES = docsData.pages as readonly { label: string; href: string }[];
 
 // ============ Timeline ============
 export const TIMELINE = timelineData as readonly { year: string; title: string; desc: string }[];
@@ -58,46 +76,15 @@ export const PROJECTS = projectsData as readonly {
 }[];
 
 // ============ Contact ============
-export const CONTACT_EMAIL = siteData.contact.email;
-export const CONTACT_KAKAO = (
-    siteData.contact as { kakao?: { label: string; value: string; href?: string; channelPublicId?: string } }
-).kakao ?? {
-    label: "KAKAOTALK",
-    value: "추후 공개",
-    href: "",
-    channelPublicId: "",
-};
-export const CONTACT_MESSAGE = siteData.contact.message;
+export const CONTACT_EMAIL = contactData.email;
+export const CONTACT_KAKAO = contactData.kakao;
+export const CONTACT_MESSAGE = contactData.message;
 
 // ============ Footer ============
-export const BUSINESS_INFO = (footerData as {
-    business?: {
-        name: string;
-        representative: string;
-        address: string;
-        businessRegistrationNumber: string;
-        mailOrderSalesRegistration: string;
-    };
-}).business ?? {
-    name: "아르카디아 (ARCADIA)",
-    representative: "",
-    address: "",
-    businessRegistrationNumber: "",
-    mailOrderSalesRegistration: "",
-};
+export const BUSINESS_INFO = footerData.business;
 export const FOOTER_SNS = footerData.sns as readonly { label: string; href: string; icon: string }[];
 
-const docs = footerData.docs as {
-    home: { label: string; href: string };
-    pages: readonly { label: string; href: string }[];
-};
-export const DOCS_HOME = docs.home;
-export const DOCS_PAGES = docs.pages;
-
-export const COPYRIGHT = siteData.copyright;
-
 // ============ Navbar ============
-export const TEAM_NAME = siteData.teamName;
 export const NAVBAR_LABELS = {
     closeMenu: "메뉴 닫기",
     openMenu: "메뉴 열기",

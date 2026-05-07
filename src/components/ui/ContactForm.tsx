@@ -86,7 +86,7 @@ export default function ContactForm() {
                 const content = (
                     <>
                         <span className="flex min-w-0 items-center gap-3">
-                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-white/[0.08] text-zinc-400">
+                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-white/[0.08] text-zinc-400 transition-all duration-300 group-hover:border-white/20 group-hover:text-white group-hover:scale-110">
                                 {method.icon === "mail" ? (
                                     <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                                         <path d="M4 6.5h16v11H4z" />
@@ -104,12 +104,12 @@ export default function ContactForm() {
                                 )}
                             </span>
                             <span className="flex min-w-0 flex-col items-start gap-0">
-                                <span className="text-[10px] font-semibold leading-tight tracking-[0.08em] text-zinc-500">{method.label}</span>
-                                {method.value && <span className="min-w-0 break-all text-left text-sm font-medium leading-tight text-zinc-200">{method.value}</span>}
+                                <span className="text-[10px] font-semibold leading-tight tracking-[0.08em] text-zinc-500 transition-colors duration-200 group-hover:text-zinc-400">{method.label}</span>
+                                {method.value && <span className="min-w-0 break-all text-left text-sm font-medium leading-tight text-zinc-200 transition-colors duration-200 group-hover:text-white">{method.value}</span>}
                             </span>
                         </span>
-                        <span className="shrink-0 text-lg leading-none text-zinc-500 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-white" aria-hidden="true">
-                            →
+                        <span className="shrink-0 text-lg leading-none text-zinc-500 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-white" aria-hidden="true">
+                            ↗
                         </span>
                     </>
                 );

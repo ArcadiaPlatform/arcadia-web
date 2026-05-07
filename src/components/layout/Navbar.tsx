@@ -101,8 +101,8 @@ export default function Navbar() {
                                     key={item.href}
                                     href={item.href}
                                     onClick={(e) => handleSectionClick(e, item.sectionId)}
-                                    className={`group/link relative shrink-0 rounded-lg px-3 py-2 text-sm font-bold whitespace-nowrap transition-all duration-200 hover:bg-white/5 hover:text-white ${
-                                        isActive ? "bg-white/10 text-white" : "text-white/70"
+                                    className={`group/link relative shrink-0 px-3 py-2 text-sm font-bold whitespace-nowrap transition-all duration-200 hover:text-white ${
+                                        isActive ? "text-white" : "text-white/70"
                                     }`}
                                 >
                                     {item.label}
@@ -115,11 +115,11 @@ export default function Navbar() {
                             );
                         })}
                     </nav>
-                    {/* 스크롤 시 햄버거 옆에 가입하기 */}
+                    {/* 스크롤 시 햄버거 옆에 가입하기 + Store + Docs */}
                     <div
-                        className="hidden md:flex items-center overflow-hidden transition-all duration-200"
+                        className="hidden md:flex items-center gap-2 overflow-hidden transition-all duration-200"
                         style={{
-                            maxWidth: scrolled ? 140 : 0,
+                            maxWidth: scrolled ? 340 : 0,
                             opacity: scrolled ? 1 : 0,
                             pointerEvents: scrolled ? "auto" : "none",
                         }}
@@ -132,6 +132,24 @@ export default function Navbar() {
                         >
                             <Image src="/icons/discord.svg" alt="" width={14} height={14} className="h-3.5 w-3.5 opacity-95" />
                             {DISCORD_INVITE.buttonLabel}
+                        </a>
+                        <a
+                            href={STORE_LINK.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-violet-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-lg shadow-violet-900/20 transition-colors hover:bg-violet-800"
+                        >
+                            <Image src="/icons/arcadia_logo_clear.svg" alt="" width={13} height={13} className="h-[13px] w-[13px] opacity-90" />
+                            구매하기
+                        </a>
+                        <a
+                            href={DOCS_HOME.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-white/20 px-3.5 py-1.5 text-xs font-medium text-white/70 transition-colors hover:border-white/40 hover:text-white"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-[13px] w-[13px] opacity-80" aria-hidden><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg>
+                            가이드북
                         </a>
                     </div>
                     <button

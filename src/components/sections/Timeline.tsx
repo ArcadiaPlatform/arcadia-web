@@ -10,7 +10,7 @@ export default function Timeline() {
     const { ref, inView } = useInView({ threshold: 0.18, rootMargin: "0px 0px -18% 0px", triggerOnce: false });
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const contentClass =
-        "flex min-h-32 w-full flex-col justify-center border border-white/[0.08] bg-white/[0.025] px-5 py-4 transition-colors duration-200 ease-out group-hover/card:border-white/[0.14] group-hover/card:bg-white/[0.045]";
+        "flex min-h-32 w-full flex-col justify-center border border-zinc-700/40 bg-[#1a1628] px-5 py-4 transition-colors duration-200 ease-out group-hover/card:border-zinc-600/50 group-hover/card:bg-[#1f1b2e]";
     const contentWrapClass =
         "w-[98%] origin-center transition-all duration-700 ease-out md:w-[94%]";
 

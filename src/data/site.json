@@ -1,30 +1,6 @@
 {
     "siteName": "ARCADIA",
     "pageTitle": "ARCADIA | 아르카디아",
-    "heroTagline": "Ever-evolving to shape the ideal",
-    "aboutHeadline": "아르카디아는 이상을 목표로 합니다",
-    "aboutDescription": "ARCADIA는 마인크래프트를 중심으로 플러그인, 디자인, 모델링 등 다양한 디지털 에셋을 제작하는 팀입니다. 아이디어를 구조화하고 구현하여 이상을 현실로 만들며, 사용자에게 완성도 높은 디지털 경험을 제공합니다.",
-    "discord": {
-        "href": "https://acda.kr/discord",
-        "inviteCode": "NanAFkRdww",
-        "message": "공식 디스코드 서버에서 업데이트와 커뮤니티 소식을 확인하세요.",
-        "buttonLabel": "가입하기"
-    },
-    "store": {
-        "href": "https://store.acda.kr",
-        "label": "ARCADIA Store",
-        "labelShort": "스토어"
-    },
-    "contact": {
-        "email": "contact@adca.kr",
-        "kakao": {
-            "label": "KAKAOTALK",
-            "value": "채널 추가하기",
-            "href": "https://pf.kakao.com/_xczgxbX",
-            "channelPublicId": "_xczgxbX"
-        },
-        "message": "협업, 제작 의뢰, 기타 문의는 아래 채널로 남겨주세요."
-    },
     "copyright": "© 2026 아르카디아 (ARCADIA). All rights reserved.",
     "teamName": "Team Arcadia"
 }
