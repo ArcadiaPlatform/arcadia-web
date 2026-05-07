@@ -1,7 +1,6 @@
 import footerData from "@/data/footer.json";
 import projectsData from "@/data/projects.json";
 import siteData from "@/data/site.json";
-import teamData from "@/data/team.json";
 import timelineData from "@/data/timeline.json";
 
 // ============ Navigation ============
@@ -47,14 +46,6 @@ export const STORE_LINK = {
 export const ABOUT_HEADLINE = siteData.aboutHeadline ?? "";
 export const ABOUT_DESCRIPTION = siteData.aboutDescription;
 
-export const TEAM_MEMBERS = teamData as {
-    name: string;
-    role: string;
-    detail?: string;
-    avatar?: string;
-    tags?: string[];
-    links?: { label: string; href: string }[];
-}[];
 
 // ============ Timeline ============
 export const TIMELINE = timelineData as readonly { year: string; title: string; desc: string }[];
@@ -68,9 +59,32 @@ export const PROJECTS = projectsData as readonly {
 
 // ============ Contact ============
 export const CONTACT_EMAIL = siteData.contact.email;
+export const CONTACT_KAKAO = (
+    siteData.contact as { kakao?: { label: string; value: string; href?: string; channelPublicId?: string } }
+).kakao ?? {
+    label: "KAKAOTALK",
+    value: "추후 공개",
+    href: "",
+    channelPublicId: "",
+};
 export const CONTACT_MESSAGE = siteData.contact.message;
 
 // ============ Footer ============
+export const BUSINESS_INFO = (footerData as {
+    business?: {
+        name: string;
+        representative: string;
+        address: string;
+        businessRegistrationNumber: string;
+        mailOrderSalesRegistration: string;
+    };
+}).business ?? {
+    name: "아르카디아 (ARCADIA)",
+    representative: "",
+    address: "",
+    businessRegistrationNumber: "",
+    mailOrderSalesRegistration: "",
+};
 export const FOOTER_SNS = footerData.sns as readonly { label: string; href: string; icon: string }[];
 
 const docs = footerData.docs as {

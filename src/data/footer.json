@@ -1,4 +1,11 @@
 {
+  "business": {
+    "name": "아르카디아 (ARCADIA)",
+    "representative": "조희륜",
+    "address": "경기도 -------",
+    "businessRegistrationNumber": "000-00-00000",
+    "mailOrderSalesRegistration": "2026-경기--------00000"
+  },
   "docs": {
     "home": {
       "label": "ARCADIA Docs",

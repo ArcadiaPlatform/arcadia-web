@@ -7,14 +7,10 @@ export default function Contact() {
     return (
         <section id="contact" className={`relative py-24 md:py-32 ${SCROLL_SECTION}`}>
             <Container>
-                <div className="mx-auto max-w-lg text-center">
+                <div className="mx-auto max-w-xl text-center">
                     <SectionHeader label={SECTION_HEADERS.contact.label} title={SECTION_HEADERS.contact.title} />
-                    <p className="mb-10 text-zinc-500 leading-relaxed">{CONTACT_MESSAGE}</p>
-                    <div className="flex justify-center">
-                        <div className="w-full max-w-md">
-                            <ContactForm />
-                        </div>
-                    </div>
+                    <p className="mb-8 text-zinc-500 leading-relaxed">{CONTACT_MESSAGE}</p>
+                    <ContactForm />
                 </div>
             </Container>
         </section>

@@ -21,6 +21,18 @@
     }
 }
 
+/* 로딩 텍스트: 아래에서 올라오며 등장 */
+@keyframes loading-letter-rise {
+    0% {
+        opacity: 0;
+        transform: translateY(1em) scaleY(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scaleY(1);
+    }
+}
+
 /* 로고가 트랜스포머처럼 중앙에서 구성되는 애니메이션 */
 @keyframes loading-logo-form {
     0% {
@@ -118,4 +130,3 @@ img {
     -webkit-user-drag: none;
     user-drag: none;
 }
-

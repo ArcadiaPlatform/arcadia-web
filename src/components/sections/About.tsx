@@ -1,7 +1,6 @@
 import Container from "@/components/layout/Container";
 import SectionHeader from "@/components/ui/SectionHeader";
-import TeamMemberGrid from "@/components/ui/TeamMemberGrid";
-import { ABOUT_DESCRIPTION, ABOUT_HEADLINE, SCROLL_SECTION, SECTION_HEADERS, TEAM_MEMBERS } from "@/lib/constants";
+import { ABOUT_DESCRIPTION, ABOUT_HEADLINE, SCROLL_SECTION, SECTION_HEADERS } from "@/lib/constants";
 
 export default function About() {
     return (
@@ -15,13 +14,6 @@ export default function About() {
                         </p>
                     )}
                     <p className="text-zinc-500 leading-relaxed">{ABOUT_DESCRIPTION}</p>
-                </div>
-
-                <div className="mx-auto mt-20 max-w-6xl">
-                    <h3 className="mb-10 text-center text-sm font-bold uppercase tracking-wider text-zinc-500 mr-[-0.05em]">
-                        팀원 소개
-                    </h3>
-                    <TeamMemberGrid members={TEAM_MEMBERS} />
                 </div>
             </Container>
         </section>

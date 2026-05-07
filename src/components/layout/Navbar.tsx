@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { type MouseEvent, useEffect, useState } from "react";
 import { blackOpsOne } from "@/app/font";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import {
@@ -41,6 +41,12 @@ export default function Navbar() {
 
 
     const headerHeight = scrolled ? "4rem" : "5rem";
+
+    const handleSectionClick = (e: MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+        e.preventDefault();
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+        setOpen(false);
+    };
 
     return (
         <>
@@ -94,6 +100,7 @@ export default function Navbar() {
                                 <a
                                     key={item.href}
                                     href={item.href}
+                                    onClick={(e) => handleSectionClick(e, item.sectionId)}
                                     className={`group/link relative shrink-0 rounded-lg px-3 py-2 text-sm font-bold whitespace-nowrap transition-all duration-200 hover:bg-white/5 hover:text-white ${
                                         isActive ? "bg-white/10 text-white" : "text-white/70"
                                     }`}
@@ -192,7 +199,7 @@ export default function Navbar() {
                                         <li key={item.href}>
                                             <a
                                                 href={item.href}
-                                                onClick={() => setOpen(false)}
+                                                onClick={(e) => handleSectionClick(e, item.sectionId)}
                                                 className={`flex items-center rounded-lg px-4 py-3 text-[14px] font-semibold transition-colors duration-200 hover:bg-white/5 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
                                                     open ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
                                                 } ${isActive ? "bg-white/10 text-white" : "text-white/75"}`}

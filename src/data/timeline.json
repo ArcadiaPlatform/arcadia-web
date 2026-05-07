@@ -1,37 +1,32 @@
 [
     {
-        "year": "2026 (예정)",
-        "title": "아르카디아 시즌 2 오픈",
-        "desc": "시즌 2 정식 오픈 예정."
-    },
-    {
-        "year": "2025.07",
-        "title": "아르카디아 시즌 1.5 서비스 종료",
-        "desc": "시즌 1.5 서비스 종료."
-    },
-    {
-        "year": "2024.12",
-        "title": "서버 재이전 및 시즌 1.5 시작",
-        "desc": "서버 재이전 및 시즌 1.5 시작."
-    },
-    {
-        "year": "2024.06",
-        "title": "ARCADIA 서버 이전",
-        "desc": "ButterPL로 서버 이전."
-    },
-    {
-        "year": "2024.01",
-        "title": "ARCADIA + PIXTAR 합병",
-        "desc": "합병 및 상호명 변경."
+        "year": "2023.08",
+        "title": "PIXTAR 팀 결성",
+        "desc": "ARCADIA 이전, 마인크래프트 개발을 목표로 PIXTAR 팀이 처음 시작되었습니다."
     },
     {
         "year": "2023.09",
         "title": "PIXTORE 오픈",
-        "desc": "PIXTORE 서비스 오픈."
+        "desc": "취미로 시작한 프로젝트를 바탕으로 PIXTAR의 첫 온라인 스토어, PIXTORE를 오픈했습니다."
     },
     {
-        "year": "2023.08",
-        "title": "PIXTAR 팀 결성",
-        "desc": "PIXTAR 팀 창립."
+        "year": "2024.01",
+        "title": "ARCADIA + PIXTAR 합병",
+        "desc": "PIXTAR와 ARCADIA가 하나의 팀으로 통합되었으며, 온라인 스토어도 새로운 방향에 맞춰 리뉴얼되었습니다."
+    },
+    {
+        "year": "2024.12",
+        "title": "시즌 1.5 시작",
+        "desc": "서비스 환경을 정비하고, 새로운 콘텐츠와 함께 ARCADIA 시즌 1.5를 시작했습니다."
+    },
+    {
+        "year": "2025.07",
+        "title": "시즌 1.5 종료",
+        "desc": "시즌 2 준비를 위해 ARCADIA 시즌 1.5 운영을 마무리했습니다."
+    },
+    {
+        "year": "2026 (예정)",
+        "title": "ARCADIA Season 2",
+        "desc": "Coming Soon..."
     }
 ]

@@ -1,6 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Container from "./Container";
-import { COPYRIGHT, DOCS_HOME, DOCS_PAGES, FOOTER_SNS, STORE_LINK } from "@/lib/constants";
+import { BUSINESS_INFO, COPYRIGHT, DOCS_HOME, DOCS_PAGES, FOOTER_SNS, STORE_LINK } from "@/lib/constants";
 
 const linkMain =
     "text-xs font-medium tracking-tight text-zinc-500 transition-colors hover:text-zinc-300 sm:text-[13px]";
@@ -9,6 +12,8 @@ const linkSub =
 const Dot = () => <span className="select-none px-1 text-zinc-600/60" aria-hidden>·</span>;
 
 export default function Footer() {
+    const [businessInfoOpen, setBusinessInfoOpen] = useState(false);
+
     return (
         <footer className="mt-20">
             <div className="h-px w-full bg-gradient-to-r from-transparent via-zinc-600/30 to-transparent" />
@@ -67,9 +72,35 @@ export default function Footer() {
             </Container>
             <div className="h-px w-full bg-gradient-to-r from-transparent via-zinc-600/30 to-transparent" />
             <div className="mx-auto w-full max-w-[90rem] px-4 py-4 sm:px-6 lg:px-8">
-                <p className="text-center text-[11px] font-normal tracking-wide text-zinc-600/90">
-                    {COPYRIGHT}
-                </p>
+                <div className="flex flex-col items-center gap-2">
+                    <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-[11px] font-normal tracking-wide text-zinc-600/90">
+                        <span>{COPYRIGHT}</span>
+                        <span className="text-zinc-700" aria-hidden>·</span>
+                        <button
+                            type="button"
+                            onClick={() => setBusinessInfoOpen((open) => !open)}
+                            className={`inline-flex items-center gap-1 transition-colors hover:text-zinc-400 ${
+                                businessInfoOpen ? "text-zinc-400" : ""
+                            }`}
+                            aria-expanded={businessInfoOpen}
+                        >
+                            사업자 정보 확인
+                            <span
+                                className={`text-[10px] transition-transform duration-200 ${businessInfoOpen ? "rotate-180" : ""}`}
+                                aria-hidden
+                            >
+                                ▾
+                            </span>
+                        </button>
+                    </div>
+                    {businessInfoOpen && (
+                        <div className="max-w-lg text-center text-[11px] leading-relaxed text-zinc-600">
+                            {BUSINESS_INFO.name} · 대표자명: {BUSINESS_INFO.representative || "-"} · 소재지: {BUSINESS_INFO.address || "-"} ·
+                            사업자등록번호: {BUSINESS_INFO.businessRegistrationNumber || "-"} · 통신판매업:{" "}
+                            {BUSINESS_INFO.mailOrderSalesRegistration || "-"}
+                        </div>
+                    )}
+                </div>
             </div>
         </footer>
     );
