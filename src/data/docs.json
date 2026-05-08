@@ -7,19 +7,19 @@
     "pages": [
         {
             "label": "이용약관",
-            "href": "https://docs.acda.kr/terms"
+            "href": "https://docs.acda.kr/policy/terms"
         },
         {
             "label": "라이선스 및 저작권",
-            "href": "https://docs.acda.kr/license"
+            "href": "https://docs.acda.kr/policy/license"
         },
         {
             "label": "개인정보처리방침",
-            "href": "https://docs.acda.kr/community-guidelines"
+            "href": "https://docs.acda.kr/policy/privacy"
         },
         {
             "label": "이메일무단수집거부",
-            "href": "https://docs.acda.kr/operating-policy"
+            "href": "https://docs.acda.kr/policy/email-collection"
         }
     ]
 }
