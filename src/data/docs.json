@@ -6,7 +6,7 @@
     },
     "pages": [
         {
-            "label": "서비스 이용약관",
+            "label": "이용약관",
             "href": "https://docs.acda.kr/terms"
         },
         {
@@ -14,11 +14,11 @@
             "href": "https://docs.acda.kr/license"
         },
         {
-            "label": "커뮤니티 이용 가이드라인",
+            "label": "개인정보처리방침",
             "href": "https://docs.acda.kr/community-guidelines"
         },
         {
-            "label": "서비스 운영정책",
+            "label": "이메일무단수집거부",
             "href": "https://docs.acda.kr/operating-policy"
         }
     ]

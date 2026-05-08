@@ -30,31 +30,122 @@ const CARD_GAP = 16;
 const CARD_STEP = CARD_WIDTH + CARD_GAP;
 const WHEEL_THRESHOLD = 50;
 const WHEEL_COOLDOWN = 400;
+const DRAG_THRESHOLD = 40; // 드래그로 카드 이동할 최소 거리
 const FALLBACK_IMAGE = "/images/arcadia_banner.png";
 const EASE = "cubic-bezier(0.4,0,0.2,1)";
 
+const TOTAL = PROJECTS.length;
+// 3벌 복제: [클론 전 | 원본 | 클론 후]
+const extendedItems = [...PROJECTS, ...PROJECTS, ...PROJECTS];
+const INIT_IDX = TOTAL; // 원본 첫 번째 카드 위치
+
 export default function Projects() {
-    const [index, setIndex] = useState(0);
+    const [trackIdx, setTrackIdx] = useState(INIT_IDX);
+    const [animated, setAnimated] = useState(true);
     const [paused, setPaused] = useState(false);
+    const [dragOffset, setDragOffset] = useState(0);
     const wheelAccum = useRef(0);
     const lastWheelTime = useRef(0);
     const carouselRef = useRef<HTMLDivElement>(null);
+    const dragStart = useRef<number | null>(null);
+    const isDragging = useRef(false);
 
-    const goNext = useCallback(() => setIndex((i) => (i + 1) % PROJECTS.length), []);
-    const goPrev = useCallback(() => setIndex((i) => (i - 1 + PROJECTS.length) % PROJECTS.length), []);
+    // 도트 인디케이터용 실제 인덱스 (0 ~ TOTAL-1)
+    const realIdx = ((trackIdx - INIT_IDX) % TOTAL + TOTAL) % TOTAL;
 
+    const goNext = useCallback(() => {
+        setAnimated(true);
+        setTrackIdx((i) => i + 1);
+    }, []);
+
+    const goPrev = useCallback(() => {
+        setAnimated(true);
+        setTrackIdx((i) => i - 1);
+    }, []);
+
+    const goToReal = useCallback((i: number) => {
+        setAnimated(true);
+        setTrackIdx(INIT_IDX + i);
+    }, []);
+
+    // 전환 끝나면 클론 범위를 벗어났는지 확인 후 순간이동
+    const handleTransitionEnd = useCallback(
+        (e: React.TransitionEvent) => {
+            if (e.propertyName !== "transform") return;
+            const normalized = ((trackIdx % TOTAL) + TOTAL) % TOTAL + INIT_IDX;
+            if (trackIdx !== normalized) {
+                setAnimated(false);
+                setTrackIdx(normalized);
+            }
+        },
+        [trackIdx],
+    );
+
+    // 순간이동 후 다시 애니메이션 활성화
+    useEffect(() => {
+        if (!animated) {
+            const t = setTimeout(() => setAnimated(true), 20);
+            return () => clearTimeout(t);
+        }
+    }, [animated]);
+
+    // 드래그/터치 핸들러
+    const onDragStart = useCallback((clientX: number) => {
+        dragStart.current = clientX;
+        isDragging.current = false;
+        setAnimated(false);
+        setPaused(true);
+    }, []);
+
+    const onDragMove = useCallback((clientX: number) => {
+        if (dragStart.current === null) return;
+        const diff = clientX - dragStart.current;
+        if (Math.abs(diff) > 4) isDragging.current = true;
+        setDragOffset(diff);
+    }, []);
+
+    const onDragEnd = useCallback((clientX: number) => {
+        if (dragStart.current === null) return;
+        const diff = clientX - dragStart.current;
+        setAnimated(true);
+        setDragOffset(0);
+        if (Math.abs(diff) >= DRAG_THRESHOLD) {
+            if (diff < 0) goNext(); else goPrev();
+        }
+        dragStart.current = null;
+        setPaused(false);
+        // 드래그 종료 직후 클릭 이벤트 차단
+        setTimeout(() => { isDragging.current = false; }, 0);
+    }, [goNext, goPrev]);
+
+    // 마우스 이벤트
+    const onMouseDown = useCallback((e: React.MouseEvent) => onDragStart(e.clientX), [onDragStart]);
+    const onMouseMove = useCallback((e: React.MouseEvent) => { if (dragStart.current !== null) onDragMove(e.clientX); }, [onDragMove]);
+    const onMouseUp = useCallback((e: React.MouseEvent) => { if (dragStart.current !== null) onDragEnd(e.clientX); }, [onDragEnd]);
+    const onMouseLeaveCarousel = useCallback((e: React.MouseEvent) => { if (dragStart.current !== null) onDragEnd(e.clientX); }, [onDragEnd]);
+
+    // 터치 이벤트
+    const onTouchStart = useCallback((e: React.TouchEvent) => onDragStart(e.touches[0].clientX), [onDragStart]);
+    const onTouchMove = useCallback((e: React.TouchEvent) => onDragMove(e.touches[0].clientX), [onDragMove]);
+    const onTouchEnd = useCallback((e: React.TouchEvent) => onDragEnd(e.changedTouches[0].clientX), [onDragEnd]);
+
+    // 휠 이벤트
     useEffect(() => {
         const el = carouselRef.current;
         if (!el) return;
         const onWheel = (e: WheelEvent) => {
             const now = Date.now();
-            if (now - lastWheelTime.current < WHEEL_COOLDOWN) { e.preventDefault(); return; }
+            if (now - lastWheelTime.current < WHEEL_COOLDOWN) {
+                e.preventDefault();
+                return;
+            }
             const delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
             wheelAccum.current += delta;
             if (Math.abs(wheelAccum.current) >= WHEEL_THRESHOLD) {
                 e.preventDefault();
                 lastWheelTime.current = now;
-                if (wheelAccum.current > 0) goNext(); else goPrev();
+                if (wheelAccum.current > 0) goNext();
+                else goPrev();
                 wheelAccum.current = 0;
             }
         };
@@ -62,6 +153,7 @@ export default function Projects() {
         return () => el.removeEventListener("wheel", onWheel);
     }, [goNext, goPrev]);
 
+    // 자동 재생
     useEffect(() => {
         if (paused) return;
         const id = setInterval(goNext, AUTO_INTERVAL);
@@ -73,22 +165,35 @@ export default function Projects() {
             <Container>
                 <SectionHeader label={SECTION_HEADERS.projects.label} title={SECTION_HEADERS.projects.title} />
                 <div className="relative -mx-4 md:-mx-6">
-                    <div ref={carouselRef} className="relative overflow-hidden px-4 md:px-6">
-                        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-[#0a0612] to-transparent" aria-hidden />
-                        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-[#0a0612] to-transparent" aria-hidden />
+                    <div
+                        ref={carouselRef}
+                        className="relative overflow-hidden px-4 md:px-6"
+                        style={{ cursor: dragStart.current !== null ? "grabbing" : "grab" }}
+                        onMouseDown={onMouseDown}
+                        onMouseMove={onMouseMove}
+                        onMouseUp={onMouseUp}
+                        onMouseLeave={onMouseLeaveCarousel}
+                        onTouchStart={onTouchStart}
+                        onTouchMove={onTouchMove}
+                        onTouchEnd={onTouchEnd}
+                    >
                         <div
-                            className="flex gap-4 transition-transform duration-500 ease-out"
+                            className="flex gap-4"
                             style={{
                                 paddingLeft: `calc(50% - ${CARD_WIDTH / 2}px)`,
                                 paddingRight: `calc(50% - ${CARD_WIDTH / 2}px)`,
-                                transform: `translateX(-${index * CARD_STEP}px)`,
+                                transform: `translateX(calc(-${trackIdx * CARD_STEP}px + ${dragOffset}px))`,
+                                transition: animated ? `transform 500ms ${EASE}` : "none",
+                                willChange: "transform",
+                                userSelect: "none",
                             }}
+                            onTransitionEnd={handleTransitionEnd}
                         >
-                            {PROJECTS.map((project, i) => {
+                            {extendedItems.map((project, i) => {
                                 const thumbnailUrl = getThumbnailUrl(project.links);
                                 return (
                                     <div
-                                        key={`${project.title}-${i}`}
+                                        key={i}
                                         className="group shrink-0 overflow-hidden rounded-sm border border-white/[0.08] bg-white/[0.03] shadow-sm transition-all duration-500 hover:border-white/30 hover:shadow-lg hover:shadow-black/40"
                                         style={{ width: CARD_WIDTH, transitionTimingFunction: EASE }}
                                         onMouseEnter={() => setPaused(true)}
@@ -101,11 +206,14 @@ export default function Projects() {
                                                 alt=""
                                                 fill
                                                 className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
-                                                style={{ transitionTimingFunction: EASE }}
+                                                style={{ transitionTimingFunction: EASE, pointerEvents: "none" }}
                                                 sizes="260px"
                                                 unoptimized={!!thumbnailUrl}
+                                                loading="eager"
+                                                draggable={false}
                                             />
                                         </div>
+                                        {/* 드래그 중 이미지 드래그 방지 */}
                                         {/* 텍스트 (호버 시 grid collapse) */}
                                         <div
                                             className="grid transition-all duration-500 group-hover:[grid-template-rows:0fr]"
@@ -128,6 +236,7 @@ export default function Projects() {
                                                                     target="_blank"
                                                                     rel="noopener noreferrer"
                                                                     className="inline-flex items-center gap-1.5 text-[11px] font-medium text-zinc-500 transition-colors hover:text-zinc-300"
+                                                                    onClick={(e) => { if (isDragging.current) e.preventDefault(); }}
                                                                 >
                                                                     {link.icon && (
                                                                         <Image src={link.icon} alt="" width={12} height={12} className="h-3 w-3 opacity-75" />
@@ -172,9 +281,9 @@ export default function Projects() {
                             <button
                                 key={i}
                                 type="button"
-                                onClick={() => setIndex(i)}
+                                onClick={() => goToReal(i)}
                                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                                    i === index ? "w-6 bg-white/80" : "w-1.5 bg-white/30 hover:bg-white/50"
+                                    i === realIdx ? "w-6 bg-white/80" : "w-1.5 bg-white/30 hover:bg-white/50"
                                 }`}
                                 aria-label={`프로젝트 ${i + 1}로 이동`}
                             />

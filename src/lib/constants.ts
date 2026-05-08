@@ -33,7 +33,7 @@ export const SECTION_HEADERS = {
 // ============ Site ============
 export const SITE_NAME = siteData.siteName;
 export const PAGE_TITLE = siteData.pageTitle;
-export const COPYRIGHT = siteData.copyright;
+export const COPYRIGHT = siteData.copyright.replace(/\d{4}/, new Date().getFullYear().toString());
 export const TEAM_NAME = siteData.teamName;
 
 // ============ Hero ============
