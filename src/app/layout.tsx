@@ -8,8 +8,32 @@ import { PAGE_TITLE } from "@/lib/constants";
 
 export const metadata: Metadata = {
     title: PAGE_TITLE,
+    description: "ARCADIA는 마인크래프트를 중심으로 다양한 디지털 리소스를 제작합니다.",
+    metadataBase: new URL("https://acda.kr"),
     icons: {
         icon: "icons/favicon.ico",
+    },
+    openGraph: {
+        title: PAGE_TITLE,
+        description: "ARCADIA는 마인크래프트를 중심으로 다양한 디지털 리소스를 제작합니다.",
+        url: "https://acda.kr",
+        siteName: "ARCADIA",
+        images: [
+            {
+                url: "/images/arcadia_banner.png",
+                width: 1200,
+                height: 630,
+                alt: "ARCADIA",
+            },
+        ],
+        locale: "ko_KR",
+        type: "website",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: PAGE_TITLE,
+        description: "ARCADIA는 마인크래프트를 중심으로 다양한 디지털 리소스를 제작합니다.",
+        images: ["/images/arcadia_banner.png"],
     },
 };
 
